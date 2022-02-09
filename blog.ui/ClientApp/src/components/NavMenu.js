@@ -33,6 +33,11 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                 </NavItem>
+                {!!(this.props.loggedIn && this.props.user.roles.findIndex(r => r === 'admin') > -1) &&
+                  <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/new">New Blog</NavLink>
+                  </NavItem>
+                }
               </ul>
             </Collapse>
           </Container>

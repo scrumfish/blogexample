@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace blog.objects
 {
-    public class Credentials
+    public record Credentials
     {
-        public string? email { get; set; }
-        public string? password { get; set; }
+        public string email { get; init; }
+        public string password { get; init; }
     }
 }
