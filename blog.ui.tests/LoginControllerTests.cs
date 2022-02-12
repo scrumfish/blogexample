@@ -13,8 +13,8 @@ namespace blog.ui.tests
     [TestClass]
     public class LoginControllerTests
     {
-        private LoginController? target;
-        private Mock<IUserData>? userMock;
+        private LoginController target = new (new Mock<IUserData>().Object);
+        private Mock<IUserData> userMock = new();
         private Mock<ControllerContext>? controllerContextMock;
         private Mock<HttpContext>? httpContextMock;
         private Mock<HttpRequest>? httpRequestMock;
@@ -136,7 +136,7 @@ namespace blog.ui.tests
                 password = password
             };
             var result = target.Post(credentials) as OkObjectResult;
-            Assert.IsNotNull(result.Value as User);
+            Assert.IsNotNull(result?.Value as User);
         }
 
         [TestMethod]
@@ -154,7 +154,7 @@ namespace blog.ui.tests
                 password = password
             };
             var result = target.Post(credentials) as OkObjectResult;
-            Assert.IsNull((result.Value as User).password);
+            Assert.IsNull((result?.Value as User)?.password);
         }
     }
 }
