@@ -8,7 +8,7 @@ namespace blog.objects
 {
     public record Credentials
     {
-        public string email { get; init; }
-        public string password { get; init; }
+        public string email { get; init; } = string.Empty;
+        public string password { get; init; } = string.Empty;
     }
 }
