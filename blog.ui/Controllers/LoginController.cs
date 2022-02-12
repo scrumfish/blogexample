@@ -33,7 +33,11 @@ namespace blog.ui.Controllers
             {
                 return BadRequest();
             }
-            if(BCrypt.Net.BCrypt.Verify(credentials.password, user.password))
+            if (string.IsNullOrWhiteSpace(user.email))
+            {
+                return BadRequest();
+            }
+            if (BCrypt.Net.BCrypt.Verify(credentials.password, user.password))
             {
                 user.password = null;
                 var claimsIdentity = new ClaimsIdentity(new[]
@@ -41,9 +45,12 @@ namespace blog.ui.Controllers
                         new Claim(ClaimTypes.Name, user.email),
                         new Claim(ClaimTypes.NameIdentifier, user.email)
                     }, "Password");
-                foreach (var role in user.roles)
+                if (user.roles != null)
                 {
-                    claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role));
+                    foreach (var role in user.roles)
+                    {
+                        claimsIdentity.AddClaim(new Claim(ClaimTypes.Role, role));
+                    }
                 }
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
                 Request.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal).Wait();
