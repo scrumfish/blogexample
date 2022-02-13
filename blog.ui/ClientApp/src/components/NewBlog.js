@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Container, Row, Col, Button, Form, Input, Label } from 'reactstrap'
+import { useHistory } from 'react-router'
 import { EditorState, convertToRaw } from 'draft-js'
 import { Editor } from 'react-draft-wysiwyg'
 import draftToHtml from 'draftjs-to-html'
@@ -9,6 +10,7 @@ import Auth from './Auth'
 const NewBlog = () => {
   const [title, setTitle] = useState('')
   const [editorState, setEditorState] = useState(EditorState.createEmpty())
+  const history = useHistory()
 
   const handleSubmit = async (e) => {
       e.preventDefault()
@@ -21,8 +23,8 @@ const NewBlog = () => {
           body: JSON.stringify({ title: title, article: content })
       })
       if (response.ok) {
-        setTitle('')
-        setEditorState(EditorState.createEmpty())
+        const json = await response.json()
+        history.push(`/blog/${json.id}`)
       }
   }
 

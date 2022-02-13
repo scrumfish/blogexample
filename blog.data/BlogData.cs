@@ -1,4 +1,5 @@
-﻿using blog.data.Services;
+﻿using blog.data.Extensions;
+using blog.data.Services;
 using blog.objects;
 using blog.objects.Extensions;
 using blog.objects.Interfaces;
@@ -35,6 +36,7 @@ namespace blog.data
         public string Add(BlogEntry entry)
         {
             var blog = entry.ToBlog();
+            blog.fragment = entry.article.ToFragment();
             blog.publishedAt = DateTime.UtcNow;
             blog.id = ShortId.NewId();
             using (var client = new CosmosClient(uri, key))
@@ -57,11 +59,36 @@ namespace blog.data
                 while (query.HasMoreResults)
                 {
                     var result = query.ReadNextAsync().Result;
-                    response.AddRange(result.ToList());
+                    response.AddRange(result.Select(r => WithFragment(r)).ToList());
                 }
                 return response;
             }
 
+        }
+
+        private Title WithFragment(Title input)
+        {
+            if (string.IsNullOrWhiteSpace(input.fragment))
+            {
+                var blog = Get(input.id);
+                if (blog == null)
+                {
+                    throw new NullReferenceException(nameof(input));
+                }
+                blog.fragment = blog.article.ToFragment();
+                UpdateEntry(blog);
+                return blog.ToTitle();
+            }
+            return input;
+        }
+
+        public void UpdateEntry(Blog entry)
+        {
+            using (var client = new CosmosClient(uri, key))
+            {
+                var container = client.GetContainer(databaseId, collection);
+                container.UpsertItemAsync(entry, new PartitionKey(entry.id)).Wait();
+            }
         }
 
         public Blog? Get(string id)
