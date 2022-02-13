@@ -18,6 +18,8 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("admin"));
 });
 builder.Services.AddTransient<IUserData, UserData>();
+builder.Services.AddTransient<IBlogData, BlogData>();
+builder.Services.AddTransient<IImageData, ImageData>();
 
 var app = builder.Build();
 

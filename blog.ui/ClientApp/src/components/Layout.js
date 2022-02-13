@@ -5,19 +5,17 @@ import { getSession } from '../utils/Sessions'
 
 const Layout = ({children}) => {
   const [loggedIn, setLoggedIn] = useState(getSession() !== null)
-  const [user, setUser] = useState(getSession())
 
   useEffect(() => {
     window.onstorage = () => {
       const session = getSession()
       setLoggedIn(session !== null)
-      setUser(session)
     }
   },[])
 
   return (
     <div>
-      <NavMenu loggedIn={loggedIn} user={user} />
+      <NavMenu loggedIn={loggedIn} />
       <Container>
         {children}
       </Container>
