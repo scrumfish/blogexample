@@ -10,5 +10,6 @@ namespace blog.objects
     {
         public string title { get; init; } = string.Empty;
         public string article { get; init; } = string.Empty;
+        public string fragment { get; init; } = string.Empty;
     }
 }

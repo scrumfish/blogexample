@@ -11,6 +11,7 @@ namespace blog.objects
         public string? id { get; set; }
         public string? title { get; set; }
         public string? article { get; set; }
+        public string? fragment { get; set; }
         public DateTime publishedAt { get; set; }
     }
 }

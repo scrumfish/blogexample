@@ -43,7 +43,7 @@ namespace blog.ui.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get([FromQuery] string id)
+        public IActionResult Get(string id)
         {
             var result = blogData.Get(id);
             if (result == null)

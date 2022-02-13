@@ -11,5 +11,6 @@ namespace blog.objects
         public string id { get; init; } = string.Empty;
         public string title { get; init; } = string.Empty;
         public DateTime publishedAt { get; init; } = DateTime.MinValue;
+        public string fragment { get; init; } = string.Empty;
     }
 }
