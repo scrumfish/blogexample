@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { getSession } from '../utils/Sessions'
 import './NavMenu.css';
 
 export class NavMenu extends Component {
@@ -22,6 +23,7 @@ export class NavMenu extends Component {
   }
 
   render () {
+    const user = getSession()
     return (
       <header>
         <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
@@ -33,7 +35,7 @@ export class NavMenu extends Component {
                 <NavItem>
                   <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                 </NavItem>
-                {!!(this.props.loggedIn && this.props.user.roles.findIndex(r => r === 'admin') > -1) &&
+                {!!(this.props.loggedIn && user.roles.findIndex(r => r === 'admin') > -1) &&
                   <NavItem>
                     <NavLink tag={Link} className="text-dark" to="/new">New Blog</NavLink>
                   </NavItem>

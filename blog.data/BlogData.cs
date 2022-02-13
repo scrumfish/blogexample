@@ -26,6 +26,10 @@ namespace blog.data
             databaseId = configuration.GetSection("Database").GetSection("DatabaseId").Value;
             key = configuration.GetSection("Database").GetSection("Key").Value;
             uri = configuration.GetSection("Database").GetSection("Endpoint").Value;
+            using (var client = new CosmosClient(uri, key))
+            {
+                client.CreateDatabaseIfNotExistsAsync(databaseId);
+            }
         }
 
         public string Add(BlogEntry entry)
@@ -36,6 +40,7 @@ namespace blog.data
             using (var client = new CosmosClient(uri, key))
             {
                 var container = client.GetContainer(databaseId, collection);
+                container.Database.CreateContainerIfNotExistsAsync(collection, "/id").Wait();
                 container.CreateItemAsync(blog, new PartitionKey(blog.id)).Wait();
             }
             return blog.id;
