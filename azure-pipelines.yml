@@ -32,3 +32,8 @@ steps:
   inputs:
     command: 'test'
     projects: '**\*test*.csproj'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/WebApp.zip'
+    ArtifactName: 'drop'
